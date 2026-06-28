@@ -29,16 +29,12 @@ kotlin {
     
     jvm()
     
-    js {
-        browser()
-    }
-    
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
     }
     
-    androidLibrary {
+    android {
        namespace = "com.example.composempdemo.app.shared"
        compileSdk = libs.versions.android.compileSdk.get().toInt()
        minSdk = libs.versions.android.minSdk.get().toInt()
@@ -57,8 +53,14 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
-            implementation(libs.compose.uiToolingPreview)
             implementation(libs.koin.android)
+        }
+        val androidHostTest by getting {
+            dependencies {
+                implementation(libs.compose.ui.test.junit4.android)
+                implementation(libs.compose.ui.test.manifest)
+                implementation(libs.robolectric)
+            }
         }
         commonMain.dependencies {
             api(projects.core)
@@ -82,14 +84,19 @@ kotlin {
 
             implementation(libs.oshi.core)
         }
+        jvmTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.assertk)
+        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(kotlin("test-annotations-common"))
+            implementation(libs.assertk)
+
+            implementation(libs.compose.ui.test)
 
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.test)
-        }
-        jsMain.dependencies {
-            implementation(libs.wrappers.browser)
         }
     }
 }
