@@ -53,7 +53,9 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
+            implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.android)
+            implementation(libs.ktor.client.okhttp)
         }
         val androidHostTest by getting {
             dependencies {
@@ -78,11 +80,17 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.navigation.compose)
+
+            implementation(libs.bundles.ktor)
+        }
+        nativeMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
 
             implementation(libs.oshi.core)
+            implementation(libs.ktor.client.okhttp)
         }
         jvmTest.dependencies {
             implementation(libs.kotlin.test)

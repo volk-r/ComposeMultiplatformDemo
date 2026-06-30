@@ -2,6 +2,7 @@
 agp = "9.2.1"
 android-compileSdk = "37"
 android-minSdk = "24"
+#noinspection OldTargetApi
 android-targetSdk = "36"
 androidx-activity = "1.13.0"
 androidx-appcompat = "1.7.1"
@@ -14,10 +15,10 @@ junit = "4.13.2"
 kotlin = "2.4.0"
 kotlin-wrappers = "2026.6.7"
 kotlinx-coroutines = "1.11.0"
-ktor = "3.5.0"
+ktor = "3.5.1"
 logback = "1.5.35"
 material3 = "1.11.0-alpha07"
-robolectric = "4.14.1"
+robolectric = "4.16.1"
 
 oshiCore = "7.3.1"
 
@@ -71,6 +72,14 @@ compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", ve
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtx" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
@@ -81,3 +90,12 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 koin = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plugin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+[bundles]
+ktor = [
+    "ktor-client-core",
+    "ktor-client-content-negotiation",
+    "ktor-client-auth",
+    "ktor-client-logging",
+    "ktor-serialization-kotlinx-json",
+]
