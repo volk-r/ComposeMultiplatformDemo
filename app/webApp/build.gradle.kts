@@ -18,6 +18,11 @@ kotlin {
             implementation(projects.app.shared)
 
             implementation(libs.compose.ui)
+
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.compose)
+
+            implementation(libs.ktor.client.js.wasm.js)
         }
     }
 }

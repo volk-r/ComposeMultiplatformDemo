@@ -56,6 +56,8 @@ kotlin {
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.android)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.datastore)
+            implementation(libs.datastore.preferences)
         }
         val androidHostTest by getting {
             dependencies {
@@ -81,20 +83,32 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.navigation.compose)
 
+            api(libs.datastore.preferences.core)
+
             implementation(libs.bundles.ktor)
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
+        }
+        appleMain.dependencies {
+            implementation(libs.datastore)
+            implementation(libs.datastore.preferences)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
 
             implementation(libs.oshi.core)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.datastore)
+            implementation(libs.datastore.preferences)
         }
         jvmTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.assertk)
+        }
+        webMain.dependencies {
+            implementation(libs.datastore.core.okio)
+            implementation(libs.datastore.preferences.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -106,6 +120,10 @@ kotlin {
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.test)
         }
+    }
+
+    listOf("androidMain", "appleMain", "jvmMain").forEach { sourceSetName ->
+        sourceSets.getByName(sourceSetName).kotlin.srcDir("src/nonWebMain/kotlin")
     }
 }
 

@@ -14,6 +14,7 @@ fun MainViewController() = ComposeUIViewController(
 ) {
     App(
         batteryManager = remember { BatteryManager() },
-        client = remember { InsultCensorClient(createHttpClient(Darwin.create())) }
+        client = remember { InsultCensorClient(createHttpClient(Darwin.create())) },
+        prefs = remember { createDataStore() },
     )
 }

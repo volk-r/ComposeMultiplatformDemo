@@ -14,6 +14,9 @@ dependencies {
 
     implementation(libs.ktor.client.okhttp)
     implementation(libs.compose.uiToolingPreview)
+
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.compose)
 }
 
 compose.desktop {

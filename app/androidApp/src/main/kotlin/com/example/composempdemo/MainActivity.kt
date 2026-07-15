@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.example.composempdemo.di.platformModule
 import com.example.composempdemo.di.sharedModule
 
@@ -16,6 +18,7 @@ import com.example.composempdemo.networking.createHttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinApplication
+import org.koin.compose.koinInject
 import org.koin.dsl.koinConfiguration
 
 class MainActivity : ComponentActivity() {
@@ -24,9 +27,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val dataStore = koinInject<DataStore<Preferences>>()
             App(
                 batteryManager = remember { BatteryManager(applicationContext) },
                 client = remember { InsultCensorClient(createHttpClient(OkHttp.create())) },
+                prefs = remember { dataStore },
             )
         }
     }
@@ -42,9 +47,11 @@ fun AppAndroidPreview() {
             modules(sharedModule, platformModule)
         }
     ) {
+        val dataStore = koinInject<DataStore<Preferences>>()
         App(
             batteryManager = remember(context) { BatteryManager(context) },
             client = remember { InsultCensorClient(createHttpClient(OkHttp.create())) },
+            prefs = remember { dataStore },
         )
     }
 }

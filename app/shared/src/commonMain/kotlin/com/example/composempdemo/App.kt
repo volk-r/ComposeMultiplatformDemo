@@ -2,7 +2,6 @@ package com.example.composempdemo
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -25,10 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.composempdemo.dependencies.DbClient
 import com.example.composempdemo.dependencies.MyViewModel
 import com.example.composempdemo.networking.InsultCensorClient
 import com.example.composempdemo.util.NetworkError
@@ -38,6 +42,7 @@ import composempdemo.app.shared.generated.resources.Res
 import composempdemo.app.shared.generated.resources.battery
 import composempdemo.app.shared.generated.resources.battery_level
 import composempdemo.app.shared.generated.resources.battery_unavailable
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -46,7 +51,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun App(
     batteryManager: BatteryManager,
-    client: InsultCensorClient
+    client: InsultCensorClient,
+    prefs: DataStore<Preferences>,
 ) {
     var batteryLevel by remember { mutableIntStateOf(batteryManager.getBatteryLevel()) }
 
@@ -63,6 +69,14 @@ fun App(
         mutableStateOf<NetworkError?>(null)
     }
     var scope = rememberCoroutineScope()
+
+    val counter by prefs
+        .data
+        .map {
+            val counterKey = intPreferencesKey("counter")
+            it[counterKey] ?: 0
+        }
+        .collectAsState(0)
 
     LaunchedEffect(batteryManager) {
         batteryManager.watchBatteryLevel { level ->
@@ -141,6 +155,22 @@ fun App(
                             text = it.name,
                             color = Color.Red
                         )
+                    }
+
+                    Text(
+                        modifier = Modifier.padding(top = 16.dp),
+                        text = counter.toString(),
+                        fontSize = 50.sp
+                    )
+                    Button(onClick = {
+                        scope.launch {
+                            prefs.edit { dataStore ->
+                                val counterKey = intPreferencesKey("counter")
+                                dataStore[counterKey] = counter + 1
+                            }
+                        }
+                    }) {
+                        Text("Increment")
                     }
                 }
             }
