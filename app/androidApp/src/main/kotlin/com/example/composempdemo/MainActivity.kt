@@ -4,18 +4,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.lifecycle.lifecycleScope
 import com.example.composempdemo.di.platformModule
 import com.example.composempdemo.di.sharedModule
 
 import com.example.composempdemo.networking.InsultCensorClient
 import com.example.composempdemo.networking.createHttpClient
 import io.ktor.client.engine.okhttp.OkHttp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
@@ -25,6 +29,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+
+        var isChecking = true
+        lifecycleScope.launch {
+            delay(3000L)
+            isChecking = false
+        }
+        installSplashScreen().apply {
+            setKeepOnScreenCondition { isChecking }
+        }
 
         setContent {
             val dataStore = koinInject<DataStore<Preferences>>()

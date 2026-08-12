@@ -24,6 +24,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.ktor.client.okhttp)
+    implementation(libs.core.splashscreen)
 }
 
 android {

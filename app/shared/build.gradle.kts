@@ -58,6 +58,8 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.datastore)
             implementation(libs.datastore.preferences)
+
+            implementation(libs.core.splashscreen)
         }
         val androidHostTest by getting {
             dependencies {
