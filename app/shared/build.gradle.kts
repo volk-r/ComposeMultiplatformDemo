@@ -88,6 +88,8 @@ kotlin {
             api(libs.datastore.preferences.core)
 
             implementation(libs.bundles.ktor)
+
+            implementation(libs.kotlinx.datetime)
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -111,6 +113,7 @@ kotlin {
         webMain.dependencies {
             implementation(libs.datastore.core.okio)
             implementation(libs.datastore.preferences.core)
+            implementation(npm("@js-joda/timezone", libs.versions.js.joda.timezone.get()))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -126,6 +129,10 @@ kotlin {
 
     listOf("androidMain", "appleMain", "jvmMain").forEach { sourceSetName ->
         sourceSets.getByName(sourceSetName).kotlin.srcDir("src/nonWebMain/kotlin")
+    }
+
+    listOf("androidMain", "appleMain", "wasmJsMain").forEach { sourceSetName ->
+        sourceSets.getByName(sourceSetName).kotlin.srcDir("src/nonJvmMain/kotlin")
     }
 }
 

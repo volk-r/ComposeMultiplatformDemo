@@ -24,5 +24,8 @@ kotlin {
 
             implementation(libs.ktor.client.js.wasm.js)
         }
+        wasmJsMain.dependencies {
+            implementation(npm("@js-joda/timezone", libs.versions.js.joda.timezone.get()))
+        }
     }
 }
