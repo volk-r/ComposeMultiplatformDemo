@@ -238,6 +238,18 @@ fun App(
                             Text("Increment")
                         }
                     }
+                    item {
+                        NativeButton(
+                            onClick = {
+                                scope.launch {
+                                    prefs.edit { dataStore ->
+                                        val counterKey = intPreferencesKey("counter")
+                                        dataStore[counterKey] = counter + 1
+                                    }
+                                }
+                            }
+                        )
+                    }
 
 
                     item {
