@@ -1,6 +1,6 @@
 # Compose Multiplatform Demo Project
 
-This is a comprehensive Kotlin Multiplatform (KMP) project demonstrating shared UI and logic across **Android, iOS, Web (Wasm/JS), Desktop (JVM)**, and a **Ktor Server**.
+This is a comprehensive project utilizing **Compose Multiplatform** for shared UI and **Kotlin Multiplatform (KMP)** for shared logic across **Android, iOS, Web (Wasm/JS), Desktop (JVM)**, and a **Ktor Server**.
 
 ## 🚀 Project Structure
 
