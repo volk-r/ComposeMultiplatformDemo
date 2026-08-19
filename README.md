@@ -1,54 +1,59 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM), Server.
+# Compose Multiplatform Demo Project
 
-* [/app/iosApp](./app/iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+This is a comprehensive Kotlin Multiplatform (KMP) project demonstrating shared UI and logic across **Android, iOS, Web (Wasm/JS), Desktop (JVM)**, and a **Ktor Server**.
 
-* [/app/shared](./app/shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./app/shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./app/shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./app/shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+## 🚀 Project Structure
 
-* [/core](./core/src) is for the code that will be shared between all targets in the project.
-  The most important subfolder is [commonMain](./core/src/commonMain/kotlin). If preferred, you
-  can add code to the platform-specific folders here too.
+*   **`:app:shared`**: The heart of the application. Contains shared Compose UI, ViewModels, and business logic.
+    *   `commonMain`: Core UI and logic shared by all targets.
+    *   `androidMain`, `appleMain`, `jvmMain`, `webMain`: Platform-specific implementations (e.g., `NativeButton`, `DataStore` initialization).
+    *   `nonWebMain` / `nonJvmMain`: Shared source sets for specific target groups.
+*   **`:app:androidApp`**: Android-specific entry point and configuration.
+*   **`:app:iosApp`**: Xcode project and SwiftUI entry point for iOS.
+*   **`:app:desktopApp`**: Entry point for the Compose Desktop application.
+*   **`:app:webApp`**: Entry point for the Web (Kotlin/Wasm & JS) application.
+*   **`:core`**: Shared utilities and domain models used by both the app and the server.
+*   **`:server`**: A Ktor-based backend server.
 
-* [/server](./server/src/main/kotlin) is for the Ktor server application.
+## ✨ Key Features
 
-### Running the apps
+*   **Shared UI**: Built with **Compose Multiplatform** for consistent design across all platforms.
+*   **Data Persistence**: Uses **Jetpack DataStore** (Preferences) with platform-specific implementations for storage paths.
+*   **Networking**: **Ktor Client** with platform-specific engines (Darwin for iOS, OkHttp for Android/JVM).
+*   **Dependency Injection**: **Koin** for managing dependencies across all modules.
+*   **Native Integration**: Demonstrates `expect/actual` patterns for native UI components (e.g., `NativeButton` using `UIKit` on iOS).
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+## 🛠 Getting Started
 
-- Android app: `./gradlew :app:androidApp:assembleDebug`
-- Desktop app:
-  - Hot reload: `./gradlew :app:desktopApp:hotRun --auto`
-  - Standard run: `./gradlew :app:desktopApp:run`
-- Server: `./gradlew :server:run`
-- Web app:
-  - Wasm target (faster, modern browsers): `./gradlew :app:webApp:wasmJsBrowserDevelopmentRun`
-  - JS target (slower, supports older browsers): `./gradlew :app:webApp:jsBrowserDevelopmentRun`
-- iOS app: open the [/app/iosApp](./app/iosApp) directory in Xcode and run it from there.
+### Prerequisites
+*   Android Studio (latest stable or Koala+)
+*   Xcode (for iOS development)
+*   JDK 17 or higher
 
-### Running tests
+### Running the Applications
 
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
+| Target | Command |
+| :--- | :--- |
+| **Android** | `./gradlew :app:androidApp:assembleDebug` (or run from IDE) |
+| **Desktop** | `./gradlew :app:desktopApp:run` |
+| **Web (Wasm)** | `./gradlew :app:webApp:wasmJsBrowserDevelopmentRun` |
+| **Server** | `./gradlew :server:run` |
+| **iOS** | Open `app/iosApp/iosApp.xcodeproj` in Xcode and run. |
 
-- Android tests: `./gradlew :app:shared:testAndroidHostTest`
-- Desktop tests: `./gradlew :app:shared:jvmTest`
-- Server tests: `./gradlew :server:test`
-- Web tests:
-  - Wasm target: `./gradlew :app:shared:wasmJsTest`
-  - JS target: `./gradlew :app:shared:jsTest`
-- iOS tests: `./gradlew :app:shared:iosSimulatorArm64Test`
+### Build & Troubleshooting
+
+If you encounter issues with the Wasm lock file during the build:
+```bash
+./gradlew kotlinWasmUpgradeYarnLock
+```
+
+## 🧪 Testing
+
+*   **Android**: `./gradlew :app:shared:testAndroidHostTest`
+*   **Desktop**: `./gradlew :app:shared:jvmTest`
+*   **Web**: `./gradlew :app:shared:wasmJsTest`
+*   **iOS**: `./gradlew :app:shared:iosSimulatorArm64Test`
+*   **Server**: `./gradlew :server:test`
 
 ---
-
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
-
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+*Built with ❤️ using Kotlin Multiplatform.*
